@@ -101,12 +101,12 @@ const ISOTable iso_table[] = {
 
 // Hardcoded fix for filename counter offsetted by 1
 long get_file_next_counter() {
-    return get_file_counter() + 1;
+    return get_file_counter();
 }
 
 // Hardcoded fix for filename counter offsetted by 1
 long get_target_file_num() {
-    return get_exposure_counter() + 1;
+    return get_exposure_counter();
 }
 
 void get_target_dir_name(char *out) {

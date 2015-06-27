@@ -217,8 +217,8 @@ FUNC ref=0
 ASM
 FW 38
 PATCHSUB ref=0
-FW 78
->>>
+FW 85
+>>> prelabel
 "    BL      capt_seq_hook_raw_here \n"         // added
 <<<
 FW $

@@ -36,18 +36,22 @@ void camera_set_led(int led, int state, int bright) {
     if(state<=1) _LEDDrive(led_table[led%sizeof(led_table)], (!state)&1);
 }
 
-void *vid_get_bitmap_fb()        { return (void*)0x40711000; }             // Found @0xff8662d0
 void *vid_get_viewport_fb()      { return (void*)0x40866b80; }             // Found @0xffb7af7c
 char *camera_jpeg_count_str()    { return (char*)0x000d7868; }             // Found @0xff9ff7f0
 int get_flash_params_count(void) { return 0xd4; }                          // Found @0xff9af548
 
-// Search for imgddev.c and work up from there
-void *vid_get_bitmap_active_buffer()
-{
-//FF9437EC
-//Also at FF943304
-    return (void *)(*(int*)(0x6144+0x18)); // found @0xFF9437CC by comparing with a2500
+extern int active_bitmap_buffer;
+extern char* bitmap_buffer[];
+
+void *vid_get_bitmap_fb() {
+    return bitmap_buffer[0];
 }
+//void *vid_get_bitmap_fb()        { return (void*)0x40711000; }             // Found @0xff8662d0
+
+void *vid_get_bitmap_active_buffer() {
+    return bitmap_buffer[active_bitmap_buffer];
+}
+
 // start palette table FFC062B0?
 void *vid_get_bitmap_active_palette()
 {
@@ -60,23 +64,8 @@ void *vid_get_bitmap_active_palette()
     return (p+1);
 }
 
-
-
-
-// Y multiplier for cameras with 480 pixel high viewports (CHDK code assumes 240)
-int vid_get_viewport_yscale()
-{
-return 2;
-}
-
-int vid_get_palette_type()   { return 5; }
-int vid_get_palette_size()   { return 256 * 4 ; }
-
-
-
-
-
-
+extern int _GetVRAMHPixelsSize();
+extern int _GetVRAMVPixelsSize();
 
 //taken from n
 int vid_get_viewport_width()
@@ -85,42 +74,17 @@ int vid_get_viewport_width()
     {
         return 360;
     }
-    extern int _GetVRAMHPixelsSize();
     return _GetVRAMHPixelsSize() >> 1;
-
 }
-
 // taken from n
 long vid_get_viewport_height()
 {
   if ((mode_get() & MODE_MASK) == MODE_PLAY)
   {
-       return 480; // or 240 ? don't actually know
+       return 480;
   }
-  extern int _GetVRAMVPixelsSize();
-  return _GetVRAMVPixelsSize() >> 1;
-
-
-
-
-
-
+  return _GetVRAMVPixelsSize();
 }
-
-
-
-
-
-/*
-void *vid_get_viewport_fb_d()
-{
-//sub_FF84E884
-// try 32d4+0x40 and 32d4 0x48
-// Maybe 0x9C instead of 0x90
-//return (void*)(*(int*)(0x2108+0x9c));
-return (void*)(*(int*)(0x32d4+0x40));
-}
-*/
 
 void *vid_get_viewport_fb_d()
 {
@@ -130,33 +94,15 @@ void *vid_get_viewport_fb_d()
 
 void *vid_get_viewport_live_fb()
 {
-//sub_FF882F08
-// Maybe not 0x54 but 0x48
-//return (void*)(*(int*) (0x32D4 + 0x54));
-//return (void*)(*(int*)(0x32d4+0x40));
-//return (void*)0x40866b80;
-//return vid_get_viewport_fb_d();
-return vid_get_viewport_fb();
-} 
-/*
-// taken from a2200
-void *vid_get_viewport_live_fb() {
-	
-	return (void*)(*(int*)(0x2108+0x138));
-	// and selected value that gave the fastest Motion Detect response using http://dataghost.com/chdk/md_meter.html.
+    return 0;
 }
-*/
-
 
 char *hook_raw_image_addr()
 {
 //FFB7C910 (search for CRAW BUFF)
-return (char*) 0x43737E20;
+    return (char*) 0x43737E20;
 }
 
-
-
-// taken from a2200
 void vid_bitmap_refresh()
 {
     extern int full_screen_refresh;
@@ -174,12 +120,11 @@ int vid_get_aspect_ratio()
     return 0; // 4:3
 }
 
-
-
+int vid_get_palette_type()   { return 5; }
+int vid_get_palette_size()   { return 256 * 4 ; }
 
 // Function to load CHDK custom colors into active Canon palette
 void load_chdk_palette()
-
 {
     extern int active_palette_buffer;
 	// Only load for the standard record and playback palettes
@@ -203,8 +148,6 @@ void load_chdk_palette()
             pal[CHDK_COLOR_BASE+10] = 0x3FA9A917;  // Yellow
             pal[CHDK_COLOR_BASE+11] = 0x3F819137;  // Dark Yellow
             pal[CHDK_COLOR_BASE+12] = 0x3FDED115;  // Light Yellow
-
-
 
             extern char palette_control;
             palette_control = 1;

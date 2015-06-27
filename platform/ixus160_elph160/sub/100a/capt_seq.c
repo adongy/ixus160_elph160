@@ -672,7 +672,6 @@ asm volatile (
 "    LDR     R0, [R7, #0x100] \n"
 "    CMP     R0, #0 \n"
 "    BNE     loc_FFAD7E84 \n"
-"    BL      capt_seq_hook_raw_here \n"         // added
 "    MOV     R0, R4 \n"
 "    BL      sub_FF99C0E4 \n"
 "    TST     R0, #1 \n"
@@ -680,6 +679,7 @@ asm volatile (
 "    LDRNE   R1, =0xFFAD7F40 /*'SsStandardCaptureSeq.c'*/ \n"
 "    MOVNE   R0, #0 \n"
 "    BLNE    _DebugAssert \n"
+"    BL      capt_seq_hook_raw_here \n"         // added
 
 "loc_FFAD7E84:\n"
 "    MOV     R0, R4 \n"

@@ -23,9 +23,6 @@ exmem support
 KNOWN BUGS
 **********
 
-Edge display only shown on half the screen (vertically)
-Some buffers are missing (zebra and al.)
-
 THANKS
 ******
 

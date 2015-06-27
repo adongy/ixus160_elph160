@@ -47,11 +47,11 @@
     #define cam_CFAPattern                  0x02010100 // Red  Green  Green  Blue
     
     //TODO
-    //#define CAM_COLORMATRIX1                             \
+    #define CAM_COLORMATRIX1                             \
     827547, 1000000, -290458, 1000000, -126086, 1000000, \
     -12829, 1000000,  530507, 1000000,   50537, 1000000, \
       5181, 1000000,   48183, 1000000,  245014, 1000000
-    //#define cam_CalibrationIlluminant1      1       // Daylight
+    #define cam_CalibrationIlluminant1      1       // Daylight
     
     #define CAM_DATE_FOLDER_NAMING 0x080            // Found @0xffaab6e4 (pass as 3rd param to GetImageFolder)
     #define PARAM_CAMERA_NAME 3                     // Found @0xffcb1568
@@ -68,8 +68,6 @@
     #define CAM_USES_ASPECT_CORRECTION      1       // camera uses the modified graphics primitives to map screens an viewports to buffers more sized
     #undef  CAM_BITMAP_WIDTH
     #define CAM_BITMAP_WIDTH                720     // Actual width of bitmap screen in bytes
-    #undef  CAM_BITMAP_HEIGHT
-    #define CAM_BITMAP_HEIGHT               360     // Actual height of bitmap screen in bytes
 
     #define CAM_LOAD_CUSTOM_COLORS          1       // Enable loading CHDK colors into the camera palette memory/hardware
 
@@ -78,7 +76,7 @@
     #define CAM_ALT_BUTTON_NAMES            { "Playback", "Video" }
     #define CAM_ALT_BUTTON_OPTIONS          { KEY_PLAYBACK, KEY_VIDEO }
 
-    //#define DRAW_ON_ACTIVE_BITMAP_BUFFER_ONLY
+    #define DRAW_ON_ACTIVE_BITMAP_BUFFER_ONLY
 
     #undef  CAM_HAS_ERASE_BUTTON
     #undef  CAM_HAS_DISP_BUTTON
