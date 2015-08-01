@@ -88,7 +88,7 @@
     #undef  CAM_DEFAULT_ALT_BUTTON
     #define CAM_DEFAULT_ALT_BUTTON          KEY_PLAYBACK
     #define SHORTCUT_TOGGLE_RAW             KEY_VIDEO // conflicts with adjustable alt, but not many to choose from
-    //#define CAM_HAS_VIDEO_BUTTON
+    #define CAM_HAS_VIDEO_BUTTON            1
 
     #undef  CAM_MARKET_ISO_BASE
     #define CAM_MARKET_ISO_BASE             200     // Override base 'market' ISO value, from isobase.lua
